@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int coeff;
+    int exp;
+    struct Node* next;
+};
+
+// Create new term
+struct Node* createNode(int c, int e) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->coeff = c;
+    newNode->exp = e;
+    newNode->next = NULL;
+    return newNode;
+}
+
+// Insert at end
+struct Node* insertTerm(struct Node* head, int c, int e) {
+    struct Node* newNode = createNode(c, e);
+
+    if (head == NULL)
+        return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+// Print Polynomial
+void printPolynomial(struct Node* head) {
+    struct Node* temp = head;
+
+    while (temp != NULL) {
+        if (temp->exp == 0)
+            printf("%d", temp->coeff);
+        else if (temp->exp == 1)
+            printf("%dx", temp->coeff);
+        else
+            printf("%dx^%d", temp->coeff, temp->exp);
+
+        if (temp->next != NULL)
+            printf(" + ");
+
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int n, c, e;
+    struct Node* head = NULL;
+
+    printf("Enter number of terms: ");
+    scanf("%d", &n);
+
+    printf("Enter coefficient and exponent:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d %d", &c, &e);
+        head = insertTerm(head, c, e);
+    }
+
+    printf("Polynomial:\n");
+    printPolynomial(head);
+
+    return 0;
+}
